@@ -85,7 +85,7 @@ table = ax3.table(cellText=table_data[1:], colLoc='center', cellLoc='left',
                   loc='center', edges='closed')
 table.auto_set_font_size(False)
 table.set_fontsize(18)
-table.scale(1.1, 2.5)
+table.scale(1.18, 2.5)
 ax3.set_title('Norway', fontsize=20, fontweight='bold', loc='center',
               x=0.49, y=0.96)
 ax3.tick_params(labelsize=16)
@@ -194,7 +194,7 @@ purchasing power parity in USD with $66.9k,
 followed by Norway with $64.6k and 
 Hong Kong with $62.6k.'''
 text_ax = plt.subplot(gs[1, 2])
-text_ax.text(-0.1, 0.2, text3, fontsize=20, color='black')
+text_ax.text(-0.05, 0.2, text3, fontsize=20, color='black')
 text_ax.tick_params(length=0, width=0)
 text_ax.set_facecolor('none')
 text_ax.set_xticklabels([])
