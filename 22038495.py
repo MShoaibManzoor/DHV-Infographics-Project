@@ -12,9 +12,7 @@ hdi_char = pd.read_excel(path, sheet_name='HDI characteristics')
 hdi_trends = pd.read_excel(path, sheet_name='HDI trends')
 hdi_growth = pd.read_excel(path, sheet_name='HDI average growth (annual)')
 
-# Extracting data for the top five countries of Human Development index.
-# Extracting data for the top five countries of Human Development index.
-# Extracting data for the top five countries of Human Development index.
+
 # Extracting data for the top five countries of Human Development index.
 plot1 = hdi_trends.sort_index().head(5)
 plot1 = plot1.reset_index().set_index('Country').drop(['HDI rank','index'], axis=1)
@@ -43,8 +41,8 @@ fig.suptitle('''Human Development Index (HDI) Report 1990-2021
              fontweight='bold')
 
 
-gs = gridspec.GridSpec(4, 3, width_ratios=[2, 2, 2], height_ratios=[2, 1, 2, 1])
-colors = cm.inferno(np.linspace(0, 0.5, len(plot4['Country'])))
+gs = gridspec.GridSpec(4, 3, width_ratios=[2, 2, 2], height_ratios=[2, 1, 2, 1]) # type: ignore
+colors = cm.inferno(np.linspace(0, 0.5, len(plot4['Country']))) # type: ignore
 
 
 ax1 = plt.subplot(gs[0, 0])
@@ -64,7 +62,7 @@ ax1.legend(labels=plot1.index,
 ax2 = plt.subplot(gs[0, 2])
 plot2.T.plot(kind='bar', ax=ax2, width=0.6)
 ticks = range(len(plot2.columns))
-ax2.set_xticks(ticks=ticks, labels=plot2.columns, rotation=0)
+ax2.set_xticks(ticks=ticks, labels=plot2.columns, rotation=0) # type: ignore
 ax2.set_title('Annual HDI growth rate of top Ranking Countries', fontsize=18)
 ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
