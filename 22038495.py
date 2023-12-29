@@ -12,28 +12,29 @@ hdi_char = pd.read_excel(path, sheet_name='HDI characteristics')
 hdi_trends = pd.read_excel(path, sheet_name='HDI trends')
 hdi_growth = pd.read_excel(path, sheet_name='HDI average growth (annual)')
 
+# Ranking countries with respect to given HDI ranks.
+hdi_char.set_index('HDI rank', inplace=True)
+hdi_char.sort_index().head(3)
 
 # Extracting data for the top five countries of Human Development index.
 plot1 = hdi_trends.sort_index().head(5)
-plot1 = plot1.reset_index().set_index('Country').drop(['HDI rank', 'index'],
-                                                      axis=1)
+plot1 = plot1.reset_index().set_index(
+    'Country').drop(['HDI rank', 'index'], axis=1)
 
 # Extracting data for top five countries with the highest growth rate of HDI.
 plot2 = hdi_growth.sort_index().head(5)
-plot2 = plot2.reset_index().set_index('Country').drop(['HDI rank', 'index'],
-                                                      axis=1)
+plot2 = plot2.reset_index().set_index(
+    'Country').drop(['HDI rank', 'index'], axis=1)
 
 # Extracting characteristics for the top ranking country in HDI.
 plot3 = hdi_char.sort_index().head(1)
-plot3 = plot3.reset_index().set_index('Country').drop(['HDI rank', 'index'],
-                                                      axis=1)
+plot3 = plot3.reset_index().set_index('Country').drop(['HDI rank'], axis=1)
 plot3.drop(['HDI', 'Difference (GNI-HDI)'], axis=1, inplace=True)
 plot3 = plot3.T.reset_index()
 plot3 = plot3.rename(columns={'index': 'Attributes', 'Norway': 'Values'})
 
 # Comparing characteristics with top 5 countries.
 plot4 = hdi_char.sort_index().head(5)
-plot4 = plot4.set_index('HDI rank')
 
 
 fig = plt.figure(figsize=(25, 21))
@@ -43,13 +44,14 @@ fig.suptitle('''Human Development Index (HDI) Report 1990-2021
              fontsize=32,
              fontweight='bold')
 
-
+# Using gridspec to specify subplot grids.
 gs = gridspec.GridSpec(4, 3,
                        width_ratios=[2, 2, 2],  # type: ignore
                        height_ratios=[2, 1, 2, 1])  # type: ignore
 colors = cm.inferno(np.linspace(0, 0.5, len(plot4['Country'])))  # type: ignore
 
 
+# For line plot comparrison of HDI value.
 ax1 = plt.subplot(gs[0, 0])
 ax1.plot(plot1.T, label='HDI Trends of top Ranking Countries',
          linewidth=4)
@@ -64,6 +66,7 @@ ax1.legend(labels=plot1.index,
            ncols=2, fontsize=18)
 
 
+# Plotting bar plot to compare mean annual HDI growth.
 ax2 = plt.subplot(gs[0, 2])
 plot2.T.plot(kind='bar', ax=ax2, width=0.6)
 ticks = range(len(plot2.columns))
@@ -77,6 +80,7 @@ ax2.legend(loc='upper right',
            ncols=2, fontsize=12)
 
 
+# Plotting a table to display values of HDI rank 1.
 plot3 = round(plot3, 2)
 table_data = [plot3.columns.tolist()] + plot3.values.tolist()
 ax3 = plt.subplot(gs[1, 1])
@@ -91,6 +95,7 @@ ax3.set_title('Norway', fontsize=20, fontweight='bold', loc='center',
 ax3.tick_params(labelsize=16)
 
 
+# Plotting multiple horizontal barcharts for mutli-variate comparison.
 ax4 = plt.subplot(gs[2, 0])
 plot4 = plot4.sort_values(['HDI rank', 'Life expectancy (Years)',
                            'Schooling (Years)', 'GNI per capita (PPP $)'],
@@ -102,6 +107,7 @@ ax4.spines['top'].set_visible(False)
 ax4.spines['right'].set_visible(False)
 ax4.spines['bottom'].set_visible(False)
 ax4.set_xticks([])
+# To display datalabels for each bar.
 for i, v in enumerate(plot4.values[:, 2]):
     ax4.text(v, i, str(round(v, 2)), ha='left', va='center',
              fontsize=14, fontweight='bold')
@@ -147,6 +153,7 @@ ax4.set_ylabel('')
 ax4.set_yticks([])
 ax4.tick_params(labelsize=16)
 
+# Adding explaination text for each visualization.
 text1 = '''These infographics explains the ranking in the 
 Human Development Index (HDI) from 1990 to 2021.
 
@@ -207,7 +214,7 @@ text_ax.spines['right'].set_visible(False)
 
 text4 = """In conclusion Norway is ranked highest in HDI Rank due to the balance between Life expectancy age (83.23) 
 & Schooling years (18.19) while also maintaining a GNI per Capita of $64.6k, suggesting a balance between self-employed businesses, 
-due to the average schooling years, and employed individuals contributing to the GNI"""
+due to the average schooling years, and employed individuals contributing to the GNI."""
 text_ax = plt.subplot(gs[3, :])
 text_ax.text(0.45, 0.5, text4, ha='center',
              va='center', fontsize=22, color='black')
